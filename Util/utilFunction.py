@@ -73,3 +73,18 @@ def validUsefulProxy(proxy):
             return True
     except Exception, e:
         return False
+
+def validTelnetProxy(proxy):
+    '''
+    检验本地ip到代理的连接时间
+    :param proxy: 
+    :return: 
+    '''
+    _ip,_port = proxy.split(':')
+    import telnetlib
+    try:
+        tn = telnetlib.Telnet(_ip,port=_port,timeout=20)
+    except:
+        return False
+    else:
+        return True

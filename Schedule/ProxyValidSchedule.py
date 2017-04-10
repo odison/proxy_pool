@@ -17,6 +17,7 @@ import sys
 sys.path.append('../')
 
 from Util.utilFunction import validUsefulProxy
+from Util.utilFunction import validTelnetProxy
 from Manager.ProxyManager import ProxyManager
 from Util.LogHandler import LogHandler
 
@@ -36,6 +37,11 @@ class ProxyValidSchedule(ProxyManager):
             for each_proxy in self.db.getAll():
                 if validUsefulProxy(each_proxy):
                     self.log.debug('proxy: {} validation pass'.format(each_proxy))
+                    if validTelnetProxy(each_proxy):
+                        self.log.debug('proxy: {} telnet pass'.format(each_proxy))
+                    else:
+                        self.db.delete(each_proxy)
+                        self.log.info('proxy: {} telnet fail'.format(each_proxy))
                 else:
                     self.db.delete(each_proxy)
                     self.log.info('proxy: {} validation fail'.format(each_proxy))
